@@ -37,7 +37,21 @@ Open              →  http://localhost:3000
 
 ## 🚀 Quick start
 
-### Option 1 — Docker (recommended)
+### Option 1 — Prebuilt image (fastest, no clone needed)
+
+```bash
+docker run -d --name shared-id-panel -p 3000:3000 \
+  -v "$PWD/data:/app/data" \
+  ghcr.io/leo-bot66/shared-id-panel:latest
+
+# Import your own accounts
+docker cp accounts.json shared-id-panel:/tmp/accounts.json
+docker exec shared-id-panel node cli/import.js /tmp/accounts.json
+```
+
+Open `http://localhost:3000`. Available tags: `latest` · `1.0.0` · `1.0` · `main`
+
+### Option 2 — Clone and use Docker Compose (recommended)
 
 ```bash
 git clone https://github.com/Leo-bot66/shared-id-panel.git
@@ -52,7 +66,7 @@ docker compose up -d
 
 Open `http://localhost:3000`.
 
-### Option 2 — Run locally
+### Option 3 — Run locally
 
 Requires Node.js 18 or newer.
 
