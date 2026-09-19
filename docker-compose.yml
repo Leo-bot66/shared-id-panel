@@ -1,0 +1,16 @@
+services:
+  panel:
+    build: .
+    container_name: shared-id-panel
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      SITE_NAME: 共享 Apple ID 面板
+      SITE_URL: http://localhost:3000
+      REVEAL_ON_CLICK: "true"
+      SHOW_UPDATED_AT: "true"
+    volumes:
+      # 账号数据库落盘在此，容器重建不丢数据
+      - ./data:/app/data

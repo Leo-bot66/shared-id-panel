@@ -1,0 +1,32 @@
+[
+  {
+    "email": "example-us-01@example.com",
+    "password": "ExampleUsPwd01",
+    "region": "美区",
+    "status": "available",
+    "note": "示例数据，导入前请替换为真实账号",
+    "sort_order": 10
+  },
+  {
+    "email": "example-us-02@example.com",
+    "password": "ExampleUsPwd02",
+    "region": "美区",
+    "status": "available",
+    "sort_order": 20
+  },
+  {
+    "email": "example-hk-01@example.com",
+    "password": "ExampleHkPwd01",
+    "region": "香港区",
+    "status": "available",
+    "sort_order": 30
+  },
+  {
+    "email": "example-tw-01@example.com",
+    "password": "ExampleTwPwd01",
+    "region": "台湾区",
+    "status": "unavailable",
+    "note": "维护中示例：状态会渲染成灰色徽章",
+    "sort_order": 40
+  }
+]

@@ -1,0 +1,193 @@
+<%
+  /* 所有站点信息均来自环境变量，无需改动模板 */
+  var siteName        = config.siteName;
+  var siteUrl         = config.siteUrl;
+  var siteDescription = config.siteDescription;
+  var pageCanonical   = siteUrl + '/';
+
+  var siteJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: pageCanonical,
+    inLanguage: 'zh-CN',
+    description: siteDescription
+  }).replace(/</g, '\\u003c');
+%>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f1e7">
+
+  <title><%= siteName %></title>
+  <meta name="description" content="<%= siteDescription %>">
+  <link rel="canonical" href="<%= pageCanonical %>">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="author" content="<%= siteName %>">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="<%= siteName %>">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="<%= siteName %>">
+  <meta property="og:description" content="<%= siteDescription %>">
+  <meta property="og:url" content="<%= pageCanonical %>">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= siteName %>">
+  <meta name="twitter:description" content="<%= siteDescription %>">
+
+  <script type="application/ld+json"><%- siteJsonLd %></script>
+
+  <link rel="stylesheet" href="/static/css/app.css">
+  <link rel="stylesheet" href="/static/css/public-handdraw.css">
+  <link rel="stylesheet" href="/static/css/panel.css">
+</head>
+<body class="public-site public-handdraw">
+  <main id="top" class="page">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-sun">ID</span>
+        <span><%= siteName %></span>
+      </a>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="paper-stack account-hero">
+        <span class="eyebrow">APPLE ID SHARING</span>
+        <h1 id="hero-title">共享 Apple ID</h1>
+        <p class="lead">
+          <% if (stats.byRegion.length) { %>
+            <%= stats.byRegion.map(function (r) { return r.region; }).join(' · ') %>
+          <% } else { %>
+            账号状态实时展示
+          <% } %>
+        </p>
+
+        <div class="status-row" aria-label="共展示 <%= stats.total %> 个账号">
+          <span class="online-dot" aria-hidden="true"></span>
+          <span>共 <%= stats.total %> 个账号</span>
+        </div>
+
+        <div class="hero-actions">
+          <a class="primary-button" href="#accounts">查看可用账号 <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="assurance" aria-label="使用提醒">
+      <article>
+        <span class="marker orange-marker">01</span>
+        <div><h3>只在 App Store 登录</h3><p>请勿在「设置」中登录 iCloud，避免设备被锁</p></div>
+      </article>
+      <article>
+        <span class="marker cyan-marker">02</span>
+        <div><h3>密码按需获取</h3><p>首页源码不含明文密码，点击按钮才向后端读取</p></div>
+      </article>
+      <article>
+        <span class="marker orange-marker">03</span>
+        <div><h3>下载完及时退出</h3><p>下载完成后请退出共享账号，换回自己的 Apple ID</p></div>
+      </article>
+    </section>
+
+    <section id="accounts" class="accounts" aria-labelledby="accounts-title">
+      <div class="section-heading">
+        <div><h2 id="accounts-title">账号列表</h2></div>
+        <p>状态实时更新，复制后请前往 App Store 登录</p>
+      </div>
+
+      <% if (accounts.length === 0) { %>
+        <div class="empty-state">
+          <strong>暂时没有可用账号</strong>
+          <p>请先运行 <code>node cli/import.js &lt;账号文件&gt;</code> 导入账号。</p>
+        </div>
+      <% } else { %>
+        <div class="account-table" role="table" aria-label="共享账号" data-account-grid>
+          <div class="account-row account-head" role="row">
+            <span role="columnheader">地区</span>
+            <span role="columnheader">账号</span>
+            <span role="columnheader">密码</span>
+            <span role="columnheader">状态</span>
+            <span role="columnheader">操作</span>
+          </div>
+
+          <% accounts.forEach(function (account) { %>
+            <article class="account-row" role="row"
+                     data-account-card
+                     data-account-id="<%= account.id %>"
+                     data-search="<%= account.email %> <%= account.region %>">
+              <span class="region" role="cell"><b><%= account.regionCode %></b> <%= account.region %></span>
+
+              <code class="account-email" role="cell"><%= account.email %></code>
+
+              <span class="password-cell" role="cell">
+                <% if (config.revealOnClick) { %>
+                  <code class="credential-secret">••••••••••</code>
+                  <button type="button" class="password-reveal" data-reveal aria-expanded="false">显示密码</button>
+                <% } else { %>
+                  <code class="credential-secret"><%= account.password %></code>
+                <% } %>
+              </span>
+
+              <span class="account-state <%= account.status === 'available' ? 'available' : 'maintenance' %>" role="cell">
+                <i></i> <%= account.status === 'available' ? '可用' : '维护中' %>
+              </span>
+
+              <span class="row-actions" role="cell">
+                <button type="button" data-copy="<%= account.email %>">复制账号</button>
+                <button type="button" data-copy-password>复制密码</button>
+              </span>
+            </article>
+          <% }); %>
+        </div>
+        <p class="no-results" data-no-results hidden>没有匹配的账号。</p>
+      <% } %>
+
+      <p class="legal"><%= config.footerNote %></p>
+    </section>
+
+    <section class="seo-content" aria-labelledby="guide-title">
+      <div class="section-heading">
+        <div><h2 id="guide-title">共享 Apple ID 使用说明</h2></div>
+        <p>照着做，几步即可完成下载</p>
+      </div>
+
+      <div class="seo-grid">
+        <article>
+          <h3>为什么需要外区 Apple ID</h3>
+          <p>
+            部分应用只在特定地区的 App Store 上架，中国大陆区商店里搜不到。
+            想下载它们，需要用一个非中国大陆区的 Apple ID 登录 App Store。
+            本面板展示的共享账号即用于此场景。
+          </p>
+        </article>
+        <article>
+          <h3>最重要的一条：只在 App Store 登录</h3>
+          <p>
+            共享账号绝对不要在「设置 → 顶部头像」处登录 iCloud。那是 iCloud 入口，
+            账号一旦登录进去，设备会与对方账号绑定，存在被远程锁定与数据泄露的风险。
+            正确的入口只有一个：打开 App Store → 点击右上角头像 → 登录。
+          </p>
+        </article>
+        <article>
+          <h3>下载完成后请及时退出</h3>
+          <p>
+            下载完直接关闭 App Store，账号会保持登录状态，既占用账号额度，
+            也可能因同时在线设备过多而被风控。用完即退是好习惯。
+          </p>
+        </article>
+        <article>
+          <h3>提示密码错误怎么办</h3>
+          <p>
+            共享账号可能被他人修改资料。若提示密码错误，请稍等片刻后重试，
+            或换用列表中的其他账号。管理员可通过重新导入账号来刷新数据。
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/js/panel.js" defer></script>
+</body>
+</html>

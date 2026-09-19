@@ -1,0 +1,30 @@
+/* 面板补充样式 —— toast 提示（主体样式在 app.css / public-handdraw.css） */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate(-50%, 12px);
+  padding: 10px 20px;
+  background: rgba(28, 28, 26, 0.92);
+  color: #f7f3ea;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* 空状态里的行内代码 */
+.empty-state code {
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  font-size: 13px;
+}
