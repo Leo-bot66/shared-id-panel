@@ -41,7 +41,21 @@
 
 ## 🚀 快速开始
 
-### 方式一：Docker（推荐）
+### 方式一：预构建镜像（最快，无需克隆）
+
+```bash
+docker run -d --name shared-id-panel -p 3000:3000 \
+  -v "$PWD/data:/app/data" \
+  ghcr.io/leo-bot66/shared-id-panel:latest
+
+# 导入自己的账号
+docker cp accounts.json shared-id-panel:/tmp/accounts.json
+docker exec shared-id-panel node cli/import.js /tmp/accounts.json
+```
+
+打开 `http://localhost:3000`。可用标签：`latest` · `1.0.0` · `1.0` · `main`
+
+### 方式二：克隆后用 Docker Compose（推荐）
 
 ```bash
 git clone https://github.com/Leo-bot66/shared-id-panel.git
@@ -56,7 +70,7 @@ docker compose up -d
 
 打开 `http://localhost:3000`。
 
-### 方式二：本地运行
+### 方式三：本地运行
 
 需要 Node.js 18 或更高版本。
 
