@@ -1,5 +1,11 @@
 # 共享 Apple ID 面板（Shared Apple ID Panel）
 
+[![Docker Build](https://github.com/Leo-bot66/shared-id-panel/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Leo-bot66/shared-id-panel/actions/workflows/docker-publish.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](package.json)
+
+[English](README.en.md) | 简体中文
+
 一个**自托管的共享 Apple ID 展示面板**：导入账号 → 打开网页 → 访客即可查看各区域账号的实时状态并复制使用。
 
 面向需要给用户分发**共享 Apple ID**（用于在 App Store 下载小火箭 Shadowrocket、Quantumult X 等被下架应用）的场景，开箱即用。
