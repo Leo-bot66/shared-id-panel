@@ -4,6 +4,12 @@
 
 面向需要给用户分发**共享 Apple ID**（用于在 App Store 下载小火箭 Shadowrocket、Quantumult X 等被下架应用）的场景，开箱即用。
 
+## 📷 预览
+
+| 首页 | 账号列表 |
+|---|---|
+| ![首页](docs/preview-home.png) | ![账号列表](docs/preview-accounts.png) |
+
 ```
 导入账号（JSON/CSV）  →  node cli/import.js accounts.json
 启动服务              →  docker compose up -d
